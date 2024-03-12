@@ -1,4 +1,4 @@
-const MoonIcon = ({ className }: { className: string }) => {
+const MoonIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       className={className}

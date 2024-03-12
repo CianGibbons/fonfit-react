@@ -1,4 +1,4 @@
-const SunIcon = ({ className }: { className: string }) => {
+const SunIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       className={className}

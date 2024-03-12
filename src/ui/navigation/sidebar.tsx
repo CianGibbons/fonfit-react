@@ -44,8 +44,8 @@ const MainNavigation = () => {
               LinkChildren(
                 state,
                 'Account',
-                <Icons.Home className="h-6 w-auto" />,
-                <Icons.HomeOutline className="h-6 w-auto" />
+                <Icons.UserSettings className="h-6 w-auto" />,
+                <Icons.UserSettingsOutline className="h-6 w-auto" />
               )
             }
           />
@@ -58,8 +58,8 @@ const MainNavigation = () => {
               LinkChildren(
                 state,
                 'Clients',
-                <Icons.Home className="h-6 w-auto" />,
-                <Icons.HomeOutline className="h-6 w-auto" />
+                <Icons.UsersGroup className="h-6 w-auto" />,
+                <Icons.UsersGroupOutline className="h-6 w-auto" />
               )
             }
           />
@@ -72,8 +72,8 @@ const MainNavigation = () => {
               LinkChildren(
                 state,
                 'Orders',
-                <Icons.Home className="h-6 w-auto" />,
-                <Icons.HomeOutline className="h-6 w-auto" />
+                <Icons.Cart className="h-6 w-auto" />,
+                <Icons.CartOutline className="h-6 w-auto" />
               )
             }
           />
@@ -100,8 +100,8 @@ const MainNavigation = () => {
               LinkChildren(
                 state,
                 'Settings',
-                <Icons.Home className="h-6 w-auto" />,
-                <Icons.HomeOutline className="h-6 w-auto" />
+                <Icons.Cog className="h-6 w-auto" />,
+                <Icons.CogOutline className="h-6 w-auto" />
               )
             }
           />
@@ -114,8 +114,8 @@ const MainNavigation = () => {
               LinkChildren(
                 state,
                 'Users',
-                <Icons.Home className="h-6 w-auto" />,
-                <Icons.HomeOutline className="h-6 w-auto" />
+                <Icons.UserHeadset className="h-6 w-auto" />,
+                <Icons.UserHeadsetOutline className="h-6 w-auto" />
               )
             }
           />

@@ -1,4 +1,4 @@
-const LogoIcon = ({ className }: { className: string }) => {
+const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <svg className={className} viewBox="0 0 5913.41 4320" fill="#dc2625" xmlns="http://www.w3.org/2000/svg">
       <path
