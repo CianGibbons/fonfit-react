@@ -13,95 +13,115 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LayoutImport } from './routes/_layout'
 
 // Create Virtual Routes
 
-const UsersLazyImport = createFileRoute('/users')()
-const SettingsLazyImport = createFileRoute('/settings')()
-const ProductsLazyImport = createFileRoute('/products')()
-const OrdersLazyImport = createFileRoute('/orders')()
 const LoginLazyImport = createFileRoute('/login')()
-const ClientsLazyImport = createFileRoute('/clients')()
-const AccountLazyImport = createFileRoute('/account')()
-const IndexLazyImport = createFileRoute('/')()
+const LayoutIndexLazyImport = createFileRoute('/_layout/')()
+const LayoutUsersLazyImport = createFileRoute('/_layout/users')()
+const LayoutSettingsLazyImport = createFileRoute('/_layout/settings')()
+const LayoutProductsLazyImport = createFileRoute('/_layout/products')()
+const LayoutOrdersLazyImport = createFileRoute('/_layout/orders')()
+const LayoutClientsLazyImport = createFileRoute('/_layout/clients')()
+const LayoutAccountLazyImport = createFileRoute('/_layout/account')()
 
 // Create/Update Routes
-
-const UsersLazyRoute = UsersLazyImport.update({
-  path: '/users',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/users.lazy').then((d) => d.Route))
-
-const SettingsLazyRoute = SettingsLazyImport.update({
-  path: '/settings',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/settings.lazy').then((d) => d.Route))
-
-const ProductsLazyRoute = ProductsLazyImport.update({
-  path: '/products',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/products.lazy').then((d) => d.Route))
-
-const OrdersLazyRoute = OrdersLazyImport.update({
-  path: '/orders',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/orders.lazy').then((d) => d.Route))
 
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
-const ClientsLazyRoute = ClientsLazyImport.update({
-  path: '/clients',
+const LayoutRoute = LayoutImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/clients.lazy').then((d) => d.Route))
+} as any)
 
-const AccountLazyRoute = AccountLazyImport.update({
-  path: '/account',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/account.lazy').then((d) => d.Route))
-
-const IndexLazyRoute = IndexLazyImport.update({
+const LayoutIndexLazyRoute = LayoutIndexLazyImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() => import('./routes/_layout/index.lazy').then((d) => d.Route))
+
+const LayoutUsersLazyRoute = LayoutUsersLazyImport.update({
+  path: '/users',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() => import('./routes/_layout/users.lazy').then((d) => d.Route))
+
+const LayoutSettingsLazyRoute = LayoutSettingsLazyImport.update({
+  path: '/settings',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/settings.lazy').then((d) => d.Route),
+)
+
+const LayoutProductsLazyRoute = LayoutProductsLazyImport.update({
+  path: '/products',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/products.lazy').then((d) => d.Route),
+)
+
+const LayoutOrdersLazyRoute = LayoutOrdersLazyImport.update({
+  path: '/orders',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/orders.lazy').then((d) => d.Route),
+)
+
+const LayoutClientsLazyRoute = LayoutClientsLazyImport.update({
+  path: '/clients',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/clients.lazy').then((d) => d.Route),
+)
+
+const LayoutAccountLazyRoute = LayoutAccountLazyImport.update({
+  path: '/account',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/account.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/account': {
-      preLoaderRoute: typeof AccountLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/clients': {
-      preLoaderRoute: typeof ClientsLazyImport
+    '/_layout': {
+      preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
     '/login': {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/orders': {
-      preLoaderRoute: typeof OrdersLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/account': {
+      preLoaderRoute: typeof LayoutAccountLazyImport
+      parentRoute: typeof LayoutImport
     }
-    '/products': {
-      preLoaderRoute: typeof ProductsLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/clients': {
+      preLoaderRoute: typeof LayoutClientsLazyImport
+      parentRoute: typeof LayoutImport
     }
-    '/settings': {
-      preLoaderRoute: typeof SettingsLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/orders': {
+      preLoaderRoute: typeof LayoutOrdersLazyImport
+      parentRoute: typeof LayoutImport
     }
-    '/users': {
-      preLoaderRoute: typeof UsersLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/products': {
+      preLoaderRoute: typeof LayoutProductsLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/settings': {
+      preLoaderRoute: typeof LayoutSettingsLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/users': {
+      preLoaderRoute: typeof LayoutUsersLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/': {
+      preLoaderRoute: typeof LayoutIndexLazyImport
+      parentRoute: typeof LayoutImport
     }
   }
 }
@@ -109,14 +129,16 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexLazyRoute,
-  AccountLazyRoute,
-  ClientsLazyRoute,
+  LayoutRoute.addChildren([
+    LayoutAccountLazyRoute,
+    LayoutClientsLazyRoute,
+    LayoutOrdersLazyRoute,
+    LayoutProductsLazyRoute,
+    LayoutSettingsLazyRoute,
+    LayoutUsersLazyRoute,
+    LayoutIndexLazyRoute,
+  ]),
   LoginLazyRoute,
-  OrdersLazyRoute,
-  ProductsLazyRoute,
-  SettingsLazyRoute,
-  UsersLazyRoute,
 ])
 
 /* prettier-ignore-end */
