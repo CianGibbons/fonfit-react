@@ -129,7 +129,7 @@ const MainNavigation = () => {
 
 const Sidebar = () => {
   return (
-    <aside className="bg-primary-foreground py-12 px-8 border-r border-muted-foreground row-span-full flex flex-col items-start">
+    <aside className="bg-primary-foreground py-12 px-8 border-r border-muted-foreground row-span-full flex flex-col items-start gap-12">
       <div className="self-center">
         <Icons.Logo className="text-destructive h-36 w-auto" />
       </div>
