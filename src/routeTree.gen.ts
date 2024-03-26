@@ -19,12 +19,19 @@ import { Route as LayoutImport } from './routes/_layout'
 
 const LoginLazyImport = createFileRoute('/login')()
 const LayoutIndexLazyImport = createFileRoute('/_layout/')()
-const LayoutUsersLazyImport = createFileRoute('/_layout/users')()
-const LayoutSettingsLazyImport = createFileRoute('/_layout/settings')()
+const LayoutStoreSettingsLazyImport = createFileRoute(
+  '/_layout/store-settings',
+)()
 const LayoutProductsLazyImport = createFileRoute('/_layout/products')()
 const LayoutOrdersLazyImport = createFileRoute('/_layout/orders')()
-const LayoutClientsLazyImport = createFileRoute('/_layout/clients')()
-const LayoutAccountLazyImport = createFileRoute('/_layout/account')()
+const LayoutCustomersLazyImport = createFileRoute('/_layout/customers')()
+const LayoutAnalyticsLazyImport = createFileRoute('/_layout/analytics')()
+const LayoutAdministratorsLazyImport = createFileRoute(
+  '/_layout/administrators',
+)()
+const LayoutAccountSettingsLazyImport = createFileRoute(
+  '/_layout/account-settings',
+)()
 
 // Create/Update Routes
 
@@ -43,16 +50,11 @@ const LayoutIndexLazyRoute = LayoutIndexLazyImport.update({
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() => import('./routes/_layout/index.lazy').then((d) => d.Route))
 
-const LayoutUsersLazyRoute = LayoutUsersLazyImport.update({
-  path: '/users',
-  getParentRoute: () => LayoutRoute,
-} as any).lazy(() => import('./routes/_layout/users.lazy').then((d) => d.Route))
-
-const LayoutSettingsLazyRoute = LayoutSettingsLazyImport.update({
-  path: '/settings',
+const LayoutStoreSettingsLazyRoute = LayoutStoreSettingsLazyImport.update({
+  path: '/store-settings',
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
-  import('./routes/_layout/settings.lazy').then((d) => d.Route),
+  import('./routes/_layout/store-settings.lazy').then((d) => d.Route),
 )
 
 const LayoutProductsLazyRoute = LayoutProductsLazyImport.update({
@@ -69,18 +71,32 @@ const LayoutOrdersLazyRoute = LayoutOrdersLazyImport.update({
   import('./routes/_layout/orders.lazy').then((d) => d.Route),
 )
 
-const LayoutClientsLazyRoute = LayoutClientsLazyImport.update({
-  path: '/clients',
+const LayoutCustomersLazyRoute = LayoutCustomersLazyImport.update({
+  path: '/customers',
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
-  import('./routes/_layout/clients.lazy').then((d) => d.Route),
+  import('./routes/_layout/customers.lazy').then((d) => d.Route),
 )
 
-const LayoutAccountLazyRoute = LayoutAccountLazyImport.update({
-  path: '/account',
+const LayoutAnalyticsLazyRoute = LayoutAnalyticsLazyImport.update({
+  path: '/analytics',
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
-  import('./routes/_layout/account.lazy').then((d) => d.Route),
+  import('./routes/_layout/analytics.lazy').then((d) => d.Route),
+)
+
+const LayoutAdministratorsLazyRoute = LayoutAdministratorsLazyImport.update({
+  path: '/administrators',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/administrators.lazy').then((d) => d.Route),
+)
+
+const LayoutAccountSettingsLazyRoute = LayoutAccountSettingsLazyImport.update({
+  path: '/account-settings',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/account-settings.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -95,12 +111,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/account': {
-      preLoaderRoute: typeof LayoutAccountLazyImport
+    '/_layout/account-settings': {
+      preLoaderRoute: typeof LayoutAccountSettingsLazyImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/clients': {
-      preLoaderRoute: typeof LayoutClientsLazyImport
+    '/_layout/administrators': {
+      preLoaderRoute: typeof LayoutAdministratorsLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/analytics': {
+      preLoaderRoute: typeof LayoutAnalyticsLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/customers': {
+      preLoaderRoute: typeof LayoutCustomersLazyImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/orders': {
@@ -111,12 +135,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductsLazyImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/settings': {
-      preLoaderRoute: typeof LayoutSettingsLazyImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/users': {
-      preLoaderRoute: typeof LayoutUsersLazyImport
+    '/_layout/store-settings': {
+      preLoaderRoute: typeof LayoutStoreSettingsLazyImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/': {
@@ -130,12 +150,13 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
-    LayoutAccountLazyRoute,
-    LayoutClientsLazyRoute,
+    LayoutAccountSettingsLazyRoute,
+    LayoutAdministratorsLazyRoute,
+    LayoutAnalyticsLazyRoute,
+    LayoutCustomersLazyRoute,
     LayoutOrdersLazyRoute,
     LayoutProductsLazyRoute,
-    LayoutSettingsLazyRoute,
-    LayoutUsersLazyRoute,
+    LayoutStoreSettingsLazyRoute,
     LayoutIndexLazyRoute,
   ]),
   LoginLazyRoute,
