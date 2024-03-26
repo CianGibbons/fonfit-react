@@ -1,13 +1,6 @@
+import { LoginPage } from '@/pages/login.page';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/login')({
-  component: Login
+  component: LoginPage
 });
-
-function Login() {
-  return (
-    <>
-      <h1>Hello from Login!</h1>
-    </>
-  );
-}
