@@ -100,7 +100,7 @@ export function DashboardLayout() {
                 className="flex items-center gap-3 rounded-lg px-3 py-2  transition-all hover:text-primary"
               >
                 <Icons.UserHeadset className="h-4 w-4" />
-                Users
+                Administrators
               </Link>
             </nav>
           </div>
@@ -192,7 +192,7 @@ export function DashboardLayout() {
                   className="flex items-center gap-3 rounded-lg px-3 py-2  transition-all hover:text-primary"
                 >
                   <Icons.UserHeadset className="h-4 w-4" />
-                  Users
+                  Administrators
                 </Link>
               </nav>
             </SheetContent>
