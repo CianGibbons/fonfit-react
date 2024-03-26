@@ -13,11 +13,10 @@ import UsersGroupIcon from './users-group.icon';
 import UsersGroupOutlineIcon from './users-group-outline.icon';
 import UserHeadsetIcon from './user-headset.icon';
 import UserHeadsetOutlineIcon from './user-headset-outline.icon';
-import { BellIcon } from '@radix-ui/react-icons';
-import { Package, LineChart, Menu, SearchIcon, CircleUserIcon } from 'lucide-react';
+import { Package, LineChart, Menu, SearchIcon, CircleUserIcon, Bell } from 'lucide-react';
 
 export const Icons = {
-  Bell: BellIcon,
+  Bell: Bell,
   CartOutline: CartOutline,
   Cart: Cart,
   CircleUser: CircleUserIcon,
