@@ -7,6 +7,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
+import { CompanyName } from './utils/constants.ts';
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -17,6 +18,9 @@ declare module '@tanstack/react-router' {
     router: typeof router;
   }
 }
+
+// Set the Websites title to be the name of the company using the dashboard.
+document.title = CompanyName;
 
 // Render the app
 const rootElement = document.getElementById('root')!;

@@ -1,3 +1,5 @@
+import { CompanyName } from '@/utils/constants';
+
 const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <svg className={className} viewBox="0 0 5913.41 4320" fill="#dc2625" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +40,7 @@ const LogoIcon = ({ className }: { className?: string }) => {
         y="0"
       >
         <tspan textLength="3610.35" x="605.054" y="970">
-          FÓNFIT
+          {CompanyName.toUpperCase()}
         </tspan>
       </text>
 

@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Icons } from '@/ui/icons';
+import { ThemeModeToggle } from '@/ui/theme-mode-toggle';
+import { CompanyName } from '@/utils/constants';
 
 export function DashboardLayout() {
   return (
@@ -20,7 +22,7 @@ export function DashboardLayout() {
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to="/" className="flex items-center gap-2 font-semibold">
               <Icons.Logo className="h-6 w-6" />
-              <span className="">Fónfit</span>
+              <span className="">{CompanyName}</span>
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
               <Icons.Bell className="h-4 w-4" />
@@ -119,7 +121,7 @@ export function DashboardLayout() {
               <nav className="grid gap-2 text-lg font-medium">
                 <Link to="/" className="flex items-center gap-2 text-lg font-semibold">
                   <Icons.Logo className="h-6 w-6" />
-                  <span className="sr-only">Fónfit</span>
+                  <span className="sr-only">{CompanyName}</span>
                 </Link>
                 <Link
                   to="/"
@@ -198,6 +200,7 @@ export function DashboardLayout() {
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1" />
+          <ThemeModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
