@@ -1,7 +1,8 @@
+import { TableKeys } from '@/utils/constants';
 import supabase from '../supabase';
 
 export const getAllProducts = async () => {
-  let { data, error } = await supabase.from('products').select('*');
+  let { data, error } = await supabase.from(TableKeys.Products).select('*');
 
   if (error) {
     console.error(error);
