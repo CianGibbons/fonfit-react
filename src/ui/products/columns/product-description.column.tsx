@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from '@/ui/data-table/data-table-header.compone
 
 export const ProductDescriptionColumn: AccessorColumnDef<Product, string> = {
   accessorKey: 'description',
+  sortingFn: 'alphanumeric',
   header: ({ column }) => {
     return <DataTableColumnHeader column={column} title="Description" />;
   }

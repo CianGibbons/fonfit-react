@@ -46,5 +46,14 @@ export function ProductsPage() {
     );
   }
 
-  return <ProductsTable products={products as Product[]} />;
+  return (
+    <>
+      <div className="flex items-center">
+        <h1 className="text-lg font-semibold md:text-2xl">Products</h1>
+      </div>
+      <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+        <ProductsTable products={products as Product[]} />
+      </div>
+    </>
+  );
 }

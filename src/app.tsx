@@ -10,12 +10,14 @@ import { routeTree } from './routeTree.gen';
 import { CompanyName } from './utils/constants.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from './components/ui/sonner.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // Cache for 1 minute
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
+      staleTime: 0
     }
   }
 });
@@ -43,6 +45,7 @@ if (!rootElement.innerHTML) {
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
           <ReactQueryDevtools initialIsOpen={false} />
+          <Toaster />
         </QueryClientProvider>
       </ThemeProvider>
     </StrictMode>
