@@ -20,9 +20,14 @@ import { DataTableViewOptions } from './data-table-view-options.component';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   initialData: TData[];
+  addItemForm?: () => JSX.Element;
 }
 
-export function DataTable<TData, TValue>({ columns, initialData }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  initialData,
+  addItemForm: addItemDialog
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -58,7 +63,7 @@ export function DataTable<TData, TValue>({ columns, initialData }: DataTableProp
           onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
-
+        {addItemDialog && addItemDialog()}
         <DataTableViewOptions table={table} />
       </div>
       <div className="rounded-md border">
