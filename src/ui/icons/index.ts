@@ -19,7 +19,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
-  DoubleArrowRightIcon
+  DoubleArrowRightIcon,
+  InfoCircledIcon
 } from '@radix-ui/react-icons';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from '@radix-ui/react-icons';
 
@@ -39,6 +40,7 @@ export const Icons = {
   DoubleArrowRightIcon: DoubleArrowRightIcon,
   HomeOutline: HomeOutlineIcon,
   Home: HomeIcon,
+  InfoCircledIcon: InfoCircledIcon,
   LineChart: LineChart,
   Logo: LogoIcon,
   Menu: Menu,

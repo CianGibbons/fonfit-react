@@ -16,12 +16,12 @@ export function AddProductDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Product</Button>
+        <Button variant="default">Add Product</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+          <DialogTitle>Add Product</DialogTitle>
+          <DialogDescription>Fill out the details for your new Product.</DialogDescription>
         </DialogHeader>
         <AddProductForm setIsOpen={setIsOpen} />
       </DialogContent>

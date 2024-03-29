@@ -11,6 +11,7 @@ import { CompanyName } from './utils/constants.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from './components/ui/sonner.tsx';
+import { TooltipProvider } from './components/ui/tooltip.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,9 +44,11 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-          <Toaster />
+          <TooltipProvider>
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Toaster />
+          </TooltipProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </StrictMode>
