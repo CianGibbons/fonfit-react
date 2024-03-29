@@ -102,7 +102,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                   </div>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter Product Name" type="text" {...field} />
+                  <Input placeholder="Enter Product Name" type="text" {...field} data-1p-ignore />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,7 +120,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                   </div>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter the quantity that is in stock." type="number" {...field} />
+                  <Input placeholder="Enter the quantity that is in stock." type="number" {...field} data-1p-ignore />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -138,7 +138,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                   </div>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter the price of the product." type="number" {...field} />
+                  <Input placeholder="Enter the price of the product." type="number" {...field} data-1p-ignore />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,7 +156,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                   </div>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter the price of the product." {...field} />
+                  <Input placeholder="Enter the price of the product." {...field} data-1p-ignore />
                 </FormControl>
                 <FormMessage />
               </FormItem>
