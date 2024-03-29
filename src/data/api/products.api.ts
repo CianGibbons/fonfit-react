@@ -51,7 +51,6 @@ export const createProduct = async (product: ProductWithImageFile) => {
     .insert([productData as Product])
     .select();
 
-  console.log(data);
   if (error) {
     console.error(error);
     throw new Error('An error occurred while creating the product.');
