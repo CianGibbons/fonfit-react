@@ -18,13 +18,16 @@ export function AddProductDialog() {
       <DialogTrigger asChild>
         <Button variant="default">Add Product</Button>
       </DialogTrigger>
-      <DialogContent>
-        <div className="overflow-auto md:overflow-visible max-h-[70vh] sm:max-h-[50vh]">
-          <DialogHeader className="mb-4">
-            <DialogTitle>Add Product</DialogTitle>
-            <DialogDescription>Fill out the details for your new Product.</DialogDescription>
-          </DialogHeader>
-          <AddProductForm setIsOpen={setIsOpen} />
+      <DialogContent className="h-auto min-h-[min-content]">
+        <div className="mt-4 max-h-[70vh] sm:max-h-[50vh] px-[1px]  overflow-y-scroll scrollbar-track-transparent scrollbar-thumb-red-900 scrollbar-thin">
+          {/* Extra Padding Right to account for potential scrollbar */}
+          <div className="pr-4">
+            <DialogHeader className="mb-4">
+              <DialogTitle>Add Product</DialogTitle>
+              <DialogDescription>Fill out the details for your new Product.</DialogDescription>
+            </DialogHeader>
+            <AddProductForm setIsOpen={setIsOpen} />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -19,7 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1, 'Name is required.').max(255, 'Name must be 255 characters or less.'),
   in_stock: z
     .union([z.number(), z.string().transform(parseFloat)])
     .default(0)
@@ -40,7 +40,7 @@ const formSchema = z.object({
     )
     .optional(),
   discount: z
-    .number()
+    .union([z.number(), z.string().transform(parseFloat)])
     .default(0)
     .refine((x) => Number.isInteger(x), 'Discount must be a  positive whole number')
     .refine((x) => x <= 100 && x >= 0, 'Discount must be less than 100.')
@@ -172,7 +172,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                     </div>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter the price of the product." {...field} data-1p-ignore />
+                    <Input type="number" placeholder="Enter the price of the product." {...field} data-1p-ignore />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -193,7 +193,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
                   <FormControl>
                     <div>
                       <Textarea
-                        placeholder="Tell us a little bit about yourself"
+                        placeholder="Description of the product."
                         className="resize-none"
                         {...field}
                         onChange={(event) => {
@@ -260,7 +260,7 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
             />
           </div>
 
-          <div className="space-x-2 mt-4 flex justify-center">
+          <div className="space-x-2 my-4 flex justify-center ">
             <Button type="submit" disabled={isPending}>
               {isPending ? <Spinner /> : 'Submit'}
             </Button>
