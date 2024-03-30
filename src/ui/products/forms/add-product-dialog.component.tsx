@@ -19,11 +19,13 @@ export function AddProductDialog() {
         <Button variant="default">Add Product</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
-          <DialogDescription>Fill out the details for your new Product.</DialogDescription>
-        </DialogHeader>
-        <AddProductForm setIsOpen={setIsOpen} />
+        <div className="overflow-auto md:overflow-visible max-h-[70vh] sm:max-h-[50vh]">
+          <DialogHeader className="mb-4">
+            <DialogTitle>Add Product</DialogTitle>
+            <DialogDescription>Fill out the details for your new Product.</DialogDescription>
+          </DialogHeader>
+          <AddProductForm setIsOpen={setIsOpen} />
+        </div>
       </DialogContent>
     </Dialog>
   );
