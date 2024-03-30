@@ -23,7 +23,10 @@ const formSchema = z.object({
   in_stock: z
     .union([z.number(), z.string().transform(parseFloat)])
     .default(0)
-    .refine((x) => Number.isInteger(x), 'In Stock must be a whole number.')
+    .refine((x) => Number.isInteger(x) && x >= 0, {
+      message: 'In Stock must be a positive whole number.',
+      path: []
+    })
     .optional(),
   // If a decimal is provided, inputs with type number return it as a string.
   // As a result, we need to transform the string to a floating point number.
@@ -31,12 +34,16 @@ const formSchema = z.object({
   price: z
     .union([z.number(), z.string().transform(parseFloat)])
     .default(0)
-    .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON, 'Price must have at most 2 decimal places.')
+    .refine(
+      (x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON && x >= 0,
+      'Price must a positive number with at most 2 decimal places.'
+    )
     .optional(),
   discount: z
-    .union([z.number(), z.string().transform(parseFloat)])
+    .number()
     .default(0)
-    .refine((x) => Number.isInteger(x), 'In Stock must be a whole number.')
+    .refine((x) => Number.isInteger(x), 'Discount must be a  positive whole number')
+    .refine((x) => x <= 100 && x >= 0, 'Discount must be less than 100.')
     .optional(),
   is_purchasable: z.boolean().default(true).optional(),
   image: z.instanceof(FileList).optional(),
