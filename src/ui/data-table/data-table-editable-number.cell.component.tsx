@@ -17,12 +17,12 @@ export interface DataTableEditableNumberCellProps<TData, TValue> {
   validation: {
     required: boolean;
     requiredMessage: string;
-    isInteger?: boolean;
+    isInteger?: boolean; // This input is either an integer or a float
     isIntegerMessage?: string;
     enforcePositive?: boolean;
     enforcePositiveMessage?: string;
   };
-  // This input is either an integer or a float
+  isPercentage?: boolean;
 }
 
 export function DataTableEditableNumberCell<TData, TValue>({
@@ -31,7 +31,8 @@ export function DataTableEditableNumberCell<TData, TValue>({
   column,
   table,
   updateSuccessMessage,
-  validation
+  validation,
+  isPercentage = false
 }: DataTableEditableNumberCellProps<TData, TValue>) {
   const initialValue = getValue();
   const [value, setValue] = useState<number | ''>(initialValue);
@@ -87,6 +88,14 @@ export function DataTableEditableNumberCell<TData, TValue>({
       return;
     }
 
+    // If the value is percentage and isPercentage is true, then the value must be between 0 and 100
+    if (isPercentage && (Number(value) < 0 || Number(value) > 100)) {
+      toast.error('The value must be between 0 and 100');
+      ref.current?.focus();
+
+      return;
+    }
+
     if (value === currentValueRef.current) {
       return;
     }
@@ -104,15 +113,21 @@ export function DataTableEditableNumberCell<TData, TValue>({
 
     setValue(parseFloat(value));
   };
+  console.log(isPercentage);
 
   return (
-    <Input
-      ref={ref}
-      type="number"
-      value={value as number}
-      onChange={onChange}
-      onBlur={onBlur}
-      className="border-0 shadow-none"
-    />
+    <div style={{ position: 'relative' }}>
+      {isPercentage && (
+        <div style={{ position: 'absolute', left: '5px', top: '50%', transform: 'translateY(-50%)' }}>%</div>
+      )}
+      <Input
+        ref={ref}
+        type="number"
+        value={value.toString()}
+        onChange={onChange}
+        onBlur={onBlur}
+        className="border-0 shadow-none pl-5" // Add left padding to prevent the number from overlapping with the %
+      />
+    </div>
   );
 }

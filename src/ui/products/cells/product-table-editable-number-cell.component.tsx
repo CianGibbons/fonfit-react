@@ -9,7 +9,8 @@ export const ProductTableEditableNumberCell = <TData, TValue>({
   column,
   table,
   validation,
-  updateSuccessMessage
+  updateSuccessMessage,
+  isPercentage
 }: DataTableEditableNumberCellProps<TData, TValue>) => {
   return (
     <DataTableEditableNumberCell
@@ -19,6 +20,7 @@ export const ProductTableEditableNumberCell = <TData, TValue>({
       table={table}
       updateSuccessMessage={updateSuccessMessage}
       validation={validation}
+      isPercentage={isPercentage}
     />
   );
 };
