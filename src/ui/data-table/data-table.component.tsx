@@ -39,6 +39,9 @@ export function DataTable<TData, TValue>({
   initialData,
   addItemForm: addItemDialog
 }: DataTableProps<TData, TValue>) {
+  // TODO: Resizable Columns
+  // TODO: Editable Images + Categories
+
   const [data, setData] = useState<TData[]>(initialData);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
