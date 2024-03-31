@@ -4,7 +4,7 @@ import { ProductActions } from '../product-actions.component';
 
 export const ProductActionsColumn: DisplayColumnDef<Product, void> = {
   id: 'actions',
-  cell: ({ row }) => {
-    return <ProductActions productId={row.original.id} />;
+  cell: ({ row, table }) => {
+    return <ProductActions productId={row.original.id} table={table} />;
   }
 };

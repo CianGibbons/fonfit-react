@@ -75,3 +75,15 @@ export const createProduct = async (product: ProductWithImageFile) => {
 
   return data;
 };
+
+export const updateProduct = async (productID: string, product: Partial<Product>) => {
+  // 1. Update the product in the database.
+  const { data, error } = await supabase.from(TableKeys.Products).update(product).eq('id', productID);
+
+  if (error) {
+    console.error(error);
+    throw new Error('An error occurred while updating the product.');
+  }
+
+  return data;
+};

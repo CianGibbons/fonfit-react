@@ -8,7 +8,9 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   VisibilityState,
-  getFilteredRowModel
+  getFilteredRowModel,
+  RowData,
+  Table as TanStackTable
 } from '@tanstack/react-table';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -16,11 +18,20 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { DataTablePagination } from './data-table-pagination.component';
 import { DataTableViewOptions } from './data-table-view-options.component';
+import { useQueryClient } from '@tanstack/react-query';
+import { TableKeys } from '@/utils/constants';
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+    refreshData: () => void;
+  }
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   initialData: TData[];
-  addItemForm?: () => JSX.Element;
+  addItemForm?: (table: TanStackTable<TData>) => JSX.Element;
 }
 
 export function DataTable<TData, TValue>({
@@ -28,13 +39,15 @@ export function DataTable<TData, TValue>({
   initialData,
   addItemForm: addItemDialog
 }: DataTableProps<TData, TValue>) {
+  const [data, setData] = useState<TData[]>(initialData);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const queryClient = useQueryClient();
 
   const table = useReactTable({
-    data: initialData,
+    data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -51,6 +64,27 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection
+    },
+    meta: {
+      updateData: (rowIndex: number, columnId: string, value: unknown) => {
+        return setData((prevData) => {
+          return prevData.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...prevData[rowIndex],
+                [columnId]: value
+              };
+            }
+            return row;
+          });
+        });
+      },
+
+      refreshData: async () => {
+        await queryClient.refetchQueries({ queryKey: [TableKeys.Products] });
+        const data = queryClient.getQueryData([TableKeys.Products]);
+        setData(data as TData[]);
+      }
     }
   });
 
@@ -63,7 +97,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
-        {addItemDialog && addItemDialog()}
+        {addItemDialog && addItemDialog(table)}
         <DataTableViewOptions table={table} />
       </div>
       <div className="rounded-md border">

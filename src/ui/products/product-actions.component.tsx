@@ -23,21 +23,25 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
+import { Table } from '@tanstack/react-table';
 
-type ProductActionsProps = {
+type ProductActionsProps<TData> = {
   productId: string;
+  table: Table<TData>;
 };
 
-export function ProductActions({ productId }: ProductActionsProps) {
+export function ProductActions<TData>({ productId, table }: ProductActionsProps<TData>) {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: deleteMutation, isPending: deletePending } = useMutation({
     mutationFn: deleteProduct,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [TableKeys.Products]
       });
+
+      table.options.meta?.refreshData();
 
       toast.success('Product deleted successfully');
     },
@@ -46,7 +50,7 @@ export function ProductActions({ productId }: ProductActionsProps) {
     }
   });
 
-  if (isPending) {
+  if (deletePending) {
     return <Spinner size={24} />;
   }
 
@@ -69,6 +73,7 @@ export function ProductActions({ productId }: ProductActionsProps) {
             <DialogTrigger asChild>
               <DropdownMenuItem>Delete Product</DropdownMenuItem>
             </DialogTrigger>
+            <DropdownMenuItem>Update Image</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <DialogContent>
@@ -79,7 +84,7 @@ export function ProductActions({ productId }: ProductActionsProps) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="destructive" onClick={() => mutate(productId)}>
+            <Button variant="destructive" onClick={() => deleteMutation(productId)}>
               Confirm
             </Button>
             <DialogClose asChild>

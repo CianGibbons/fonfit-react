@@ -17,6 +17,7 @@ import { InfoTooltip } from '@/ui/info-tooltip.component';
 import { isNullOrUndefined } from '@/lib/type-helpers/helpers/common';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
+import { Table } from '@tanstack/react-table';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required.').max(255, 'Name must be 255 characters or less.'),
@@ -55,11 +56,12 @@ const formSchema = z.object({
     })
 });
 
-interface AddProductFormProps {
+interface AddProductFormProps<TData> {
   setIsOpen: (isOpen: boolean) => void;
+  table: Table<TData>;
 }
 
-export function AddProductForm({ setIsOpen }: AddProductFormProps) {
+export function AddProductForm<TData>({ setIsOpen, table }: AddProductFormProps<TData>) {
   const [descriptionCharCount, setDescriptionCharCount] = useState(0);
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
@@ -68,6 +70,8 @@ export function AddProductForm({ setIsOpen }: AddProductFormProps) {
       queryClient.invalidateQueries({
         queryKey: [TableKeys.Products]
       });
+
+      table.options.meta?.refreshData();
       toast.success('New Product created successfully!');
       close();
     },

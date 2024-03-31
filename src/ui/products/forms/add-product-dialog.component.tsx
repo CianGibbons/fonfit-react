@@ -9,8 +9,13 @@ import {
 } from '@/components/ui/dialog';
 import { AddProductForm } from './add-product-form.component';
 import { useState } from 'react';
+import { Table } from '@tanstack/react-table';
 
-export function AddProductDialog() {
+interface AddProductDialogProps<TData> {
+  table: Table<TData>;
+}
+
+export function AddProductDialog<TData>({ table }: AddProductDialogProps<TData>) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -26,7 +31,7 @@ export function AddProductDialog() {
               <DialogTitle>Add Product</DialogTitle>
               <DialogDescription>Fill out the details for your new Product.</DialogDescription>
             </DialogHeader>
-            <AddProductForm setIsOpen={setIsOpen} />
+            <AddProductForm setIsOpen={setIsOpen} table={table} />
           </div>
         </div>
       </DialogContent>
