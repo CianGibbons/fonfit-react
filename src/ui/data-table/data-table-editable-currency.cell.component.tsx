@@ -8,7 +8,7 @@ import { TableKeys } from '@/utils/constants';
 import { toast } from 'sonner';
 import { isNullOrUndefined } from '@/lib/type-helpers/helpers/common';
 
-export interface DataTableEditableNumberCellProps<TData, TValue> {
+export interface DataTableEditableCurrencyCellProps<TData, TValue> {
   getValue: Getter<number>;
   row: Row<TData & { id: string }>;
   column: Column<TData, TValue>;
@@ -17,30 +17,26 @@ export interface DataTableEditableNumberCellProps<TData, TValue> {
   validation: {
     required: boolean;
     requiredMessage: string;
-    isInteger?: boolean; // This input is either an integer or a float
-    isIntegerMessage?: string;
     enforcePositive?: boolean;
     enforcePositiveMessage?: string;
   };
-  isPercentage?: boolean;
 }
 
-export function DataTableEditableNumberCell<TData, TValue>({
+export function DataTableEditableCurrencyCell<TData, TValue>({
   getValue,
   row,
   column,
   table,
   updateSuccessMessage,
-  validation,
-  isPercentage = false
-}: DataTableEditableNumberCellProps<TData, TValue>) {
+  validation
+}: DataTableEditableCurrencyCellProps<TData, TValue>) {
   const initialValue = getValue();
   const [value, setValue] = useState<number | ''>(initialValue);
   const currentValueRef = useRef<number | ''>(initialValue);
   const ref = useRef<HTMLInputElement>(null);
-
-  let cancelKeyPressed = false;
   const queryClient = useQueryClient();
+  const [isFocused, setIsFocused] = useState(false);
+  let cancelKeyPressed = false;
 
   const { mutate } = useMutation({
     mutationFn: ({ id, value }: { id: string; value: Partial<Product> }) => updateProduct(id, value),
@@ -65,6 +61,21 @@ export function DataTableEditableNumberCell<TData, TValue>({
     currentValueRef.current = initialValue;
   }, [initialValue]);
 
+  useEffect(() => {
+    if (isFocused) {
+      ref.current?.focus();
+    }
+  }, [isFocused]);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (value === '') {
+      setValue('');
+      return;
+    }
+
+    setValue(Number(e.target.value));
+  };
+
   const onBlur = async () => {
     const newValue = value; // Capture the current state
 
@@ -73,37 +84,21 @@ export function DataTableEditableNumberCell<TData, TValue>({
       return;
     }
 
-    if (validation.required && (isNullOrUndefined(newValue) || newValue === '')) {
+    if (validation.required && (newValue === '' || isNullOrUndefined(newValue))) {
       toast.error(validation.requiredMessage);
       ref.current?.focus();
-
       return;
     }
 
-    // If isInteger is true, then the value must be an integer
-    if (validation.isInteger && !Number.isInteger(newValue)) {
-      toast.error('The value must be an integer');
-      ref.current?.focus();
-
-      return;
-    }
-
-    // If enforcePositive is true, then the value must be positive
     if (validation.enforcePositive && Number(newValue) < 0) {
-      toast.error('The value must be a positive number');
+      toast.error(validation.enforcePositiveMessage);
       ref.current?.focus();
-
       return;
     }
 
-    // If the value is percentage and isPercentage is true, then the value must be between 0 and 100
-    if (isPercentage && (Number(newValue) < 0 || Number(newValue) > 100)) {
-      toast.error('The value must be between 0 and 100');
-      ref.current?.focus();
+    setIsFocused(false);
 
-      return;
-    }
-
+    // Use the locally captured state for comparison
     if (newValue === currentValueRef.current) {
       return;
     }
@@ -111,46 +106,43 @@ export function DataTableEditableNumberCell<TData, TValue>({
     await mutate({ id: row.original.id, value: { [column.id]: newValue } });
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // If the value is empty
-    if (value === '') {
-      setValue('');
-      return;
-    }
-
-    setValue(parseFloat(value));
+  // Add a new onFocus handler to set isFocused to true
+  const onFocus = () => {
+    setIsFocused(true);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent) => {
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-      // Blur the input to trigger onBlur
       ref.current?.blur();
     } else if (event.key === 'Escape') {
-      // Directly reset the input's value and blur to ensure immediate UI update and cancel the mutation
-      if (ref.current) {
-        cancelKeyPressed = true;
-        ref.current.blur();
-        setValue(currentValueRef.current); // Ensure state is also reset for consistency
-      }
-      event.preventDefault(); // Prevent further propagation or default behavior
+      // Reset the value synchronously before blurring
+      const resetValue = currentValueRef.current;
+      setValue(resetValue); // Attempt to reset the state, though this may not sync before blur
+      setIsFocused(false); // Ensure focus state is also reset
+
+      cancelKeyPressed = true;
+
+      event.preventDefault(); // Prevent any default behavior
     }
   };
 
-  return (
-    <div style={{ position: 'relative' }}>
-      {isPercentage && (
-        <div style={{ position: 'absolute', left: '5px', top: '50%', transform: 'translateY(-50%)' }}>%</div>
-      )}
-      <Input
-        ref={ref}
-        type="number"
-        value={value.toString()}
-        onChange={onChange}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-        className={`${isPercentage ? `pl-5` : ''} border-0 shadow-none `} // Add left padding to prevent the number from overlapping with the %
-      />
+  return isFocused ? (
+    <Input
+      ref={ref}
+      type="number"
+      value={value.toString()}
+      onChange={onChange}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      onKeyDown={onKeyDown}
+      className="border-0 shadow-none "
+    />
+  ) : (
+    <div className="text-right font-medium" onClick={onFocus} tabIndex={0} onFocus={onFocus}>
+      {new Intl.NumberFormat('en-DE', {
+        style: 'currency',
+        currency: 'EUR'
+      }).format(parseFloat(row.getValue('price')))}
     </div>
   );
 }

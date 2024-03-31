@@ -34,6 +34,8 @@ export function DataTableEditableTextCell<TData, TValue>({
   const currentValueRef = useRef(initialValue);
   const ref = useRef<HTMLInputElement>(null);
 
+  let cancelKeyPressed = false;
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -60,6 +62,10 @@ export function DataTableEditableTextCell<TData, TValue>({
   }, [initialValue]);
 
   const onBlur = async () => {
+    if (cancelKeyPressed) {
+      cancelKeyPressed = false;
+      return;
+    }
     // if the value length is greater than 255 toast an error message and re focus the textarea
     if (value.length > validation.maxCharacters) {
       toast.error(validation.maxCharacterMessage);
@@ -81,12 +87,23 @@ export function DataTableEditableTextCell<TData, TValue>({
     await mutate({ id: row.original.id, value: { [column.id]: value } });
   };
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      ref.current?.blur();
+    } else if (event.key === 'Escape') {
+      cancelKeyPressed = true;
+      setValue(currentValueRef.current);
+      ref.current?.blur();
+    }
+  };
+
   return (
     <Input
       ref={ref}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
       className="border-0 shadow-none"
     />
   );

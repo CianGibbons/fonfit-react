@@ -1,6 +1,7 @@
 import { AccessorColumnDef } from '@tanstack/react-table';
 import { Product } from '../product.schema';
 import { DataTableColumnHeader } from '@/ui/data-table/data-table-header.component';
+import { ProductTableEditableCurrencyCell } from '../cells/product-table-editable-currency-cell.component';
 
 export const ProductPriceColumn: AccessorColumnDef<Product, number> = {
   accessorKey: 'price',
@@ -8,13 +9,32 @@ export const ProductPriceColumn: AccessorColumnDef<Product, number> = {
   header: ({ column }) => {
     return <DataTableColumnHeader column={column} title="Price" />;
   },
-  cell: ({ row }) => {
-    const amount = parseFloat(row.getValue('price'));
-    const formatted = new Intl.NumberFormat('en-DE', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(amount);
+  cell: ({ row, table, column, getValue }) => {
+    // const amount = parseFloat(row.getValue('price'));
+    // const formatted = new Intl.NumberFormat('en-DE', {
+    //   style: 'currency',
+    //   currency: 'EUR'
+    // }).format(amount);
 
-    return <div className="text-right font-medium">{formatted}</div>;
+    // return <div className="text-right font-medium">{formatted}</div>;
+    const validation = {
+      required: true,
+      requiredMessage: 'Price is required.',
+      enforcePositive: true,
+      enforcePositiveMessage: 'Price must be positive.'
+    };
+
+    const updateSuccessMessage = 'Price updated successfully.';
+
+    return (
+      <ProductTableEditableCurrencyCell
+        row={row}
+        table={table}
+        column={column}
+        getValue={getValue}
+        validation={validation}
+        updateSuccessMessage={updateSuccessMessage}
+      />
+    );
   }
 };

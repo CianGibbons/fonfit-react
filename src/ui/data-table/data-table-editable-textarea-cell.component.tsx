@@ -37,6 +37,7 @@ export function DataTableEditableTextAreaCell<TData, TValue>({
   const [descriptionCharCount, setDescriptionCharCount] = useState(initialValue.length);
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
+  let cancelKeyPressed = false;
 
   const queryClient = useQueryClient();
 
@@ -65,6 +66,10 @@ export function DataTableEditableTextAreaCell<TData, TValue>({
   }, [initialValue]);
 
   const onBlur = async () => {
+    if (cancelKeyPressed) {
+      cancelKeyPressed = false;
+      return;
+    }
     // if the value length is greater than 255 toast an error message and re focus the textarea
     if (value.length > validation.maxCharacters) {
       toast.error(validation.maxCharacterMessage);
@@ -83,6 +88,16 @@ export function DataTableEditableTextAreaCell<TData, TValue>({
     await mutate({ id: row.original.id, value: { [column.id]: value } });
   };
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      ref.current?.blur();
+    } else if (event.key === 'Escape') {
+      cancelKeyPressed = true;
+      setValue(currentValueRef.current);
+      ref.current?.blur();
+    }
+  };
+
   return (
     <div>
       <Textarea
@@ -94,6 +109,7 @@ export function DataTableEditableTextAreaCell<TData, TValue>({
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         className="border-0 shadow-none"
         placeholder={placeholder}
       />
