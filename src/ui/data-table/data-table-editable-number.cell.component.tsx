@@ -113,7 +113,6 @@ export function DataTableEditableNumberCell<TData, TValue>({
 
     setValue(parseFloat(value));
   };
-  console.log(isPercentage);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -126,7 +125,7 @@ export function DataTableEditableNumberCell<TData, TValue>({
         value={value.toString()}
         onChange={onChange}
         onBlur={onBlur}
-        className="border-0 shadow-none pl-5" // Add left padding to prevent the number from overlapping with the %
+        className={isPercentage ? `border-0 shadow-none pl-5` : ''} // Add left padding to prevent the number from overlapping with the %
       />
     </div>
   );
