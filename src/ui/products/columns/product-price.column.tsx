@@ -10,13 +10,6 @@ export const ProductPriceColumn: AccessorColumnDef<Product, number> = {
     return <DataTableColumnHeader column={column} title="Price" />;
   },
   cell: ({ row, table, column, getValue }) => {
-    // const amount = parseFloat(row.getValue('price'));
-    // const formatted = new Intl.NumberFormat('en-DE', {
-    //   style: 'currency',
-    //   currency: 'EUR'
-    // }).format(amount);
-
-    // return <div className="text-right font-medium">{formatted}</div>;
     const validation = {
       required: true,
       requiredMessage: 'Price is required.',
