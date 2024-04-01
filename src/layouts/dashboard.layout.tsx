@@ -15,6 +15,7 @@ import { ThemeModeToggle } from '@/ui/theme-mode-toggle';
 import { CompanyName } from '@/utils/constants';
 
 export function DashboardLayout() {
+  // TODO: Make Order Notification update from DB on active order count
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* Header & Sidebar - Larger Screens */}
